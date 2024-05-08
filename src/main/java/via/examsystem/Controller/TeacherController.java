@@ -1,5 +1,6 @@
 package via.examsystem.Controller;
 
+import org.springframework.http.HttpStatus;
 import via.examsystem.Service.TeacherService;
 import via.examsystem.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(
+        origins = "http://localhost:3000",
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH},
+        allowCredentials = "true"
+)
 @RestController
 @RequestMapping("/teachers")
 public class TeacherController {
@@ -51,4 +58,14 @@ public class TeacherController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Teacher> loginTeacher(@RequestBody Teacher teacher) {
+        Teacher foundTeacher = teacherService.validateTeacher(teacher.getId(), teacher.getName());
+        if (foundTeacher != null) {
+            return ResponseEntity.ok(foundTeacher);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
 }

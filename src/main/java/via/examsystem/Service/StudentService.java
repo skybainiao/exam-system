@@ -4,6 +4,7 @@ import via.examsystem.Repository.StudentRepository;
 import via.examsystem.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import via.examsystem.model.Teacher;
 
 
 import java.util.List;
@@ -46,5 +47,11 @@ public class StudentService {
             return true;
         }
         return false;
+    }
+
+    public Student validateStudent(Long id, String name) {
+        return studentRepository.findById(id)
+                .filter(student -> student.getName().equals(name))
+                .orElse(null);
     }
 }

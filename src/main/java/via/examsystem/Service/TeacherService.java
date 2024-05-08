@@ -47,4 +47,11 @@ public class TeacherService {
         }
         return false;
     }
+
+    public Teacher validateTeacher(Long id, String name) {
+        return teacherRepository.findById(id)
+                .filter(teacher -> teacher.getName().equals(name))
+                .orElse(null);
+    }
+
 }

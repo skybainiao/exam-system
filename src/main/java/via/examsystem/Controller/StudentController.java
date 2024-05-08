@@ -1,5 +1,6 @@
 package via.examsystem.Controller;
 
+import org.springframework.http.HttpStatus;
 import via.examsystem.Service.StudentService;
 import via.examsystem.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,4 +63,14 @@ public class StudentController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Student> loginTeacher(@RequestBody Student student) {
+        Student foundStudent = studentService.validateStudent(student.getId(), student.getName());
+        if (foundStudent != null) {
+            return ResponseEntity.ok(foundStudent);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
 }
