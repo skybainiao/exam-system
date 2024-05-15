@@ -6,6 +6,8 @@ import via.examsystem.model.Exam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import via.examsystem.model.Teacher;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -47,5 +49,21 @@ public class ExamService {
             return true;
         }
         return false;
+    }
+
+    public boolean setExamPassword(Long examId, String password) {
+        Optional<Exam> examOpt = examRepository.findById(examId);
+        if (examOpt.isPresent()) {
+            Exam exam = examOpt.get();
+            exam.setExamPassword(password);
+            examRepository.save(exam);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validateExamPassword(Long examId, String password) {
+        Optional<Exam> examOpt = examRepository.findById(examId);
+        return examOpt.isPresent() && examOpt.get().getExamPassword().equals(password);
     }
 }

@@ -42,6 +42,9 @@ public class TeacherController {
         return teacherService.createTeacher(teacher);
     }
 
+
+
+
     @PutMapping("/{id}")
     public ResponseEntity<Teacher> updateTeacher(@PathVariable Long id, @RequestBody Teacher teacherDetails) {
         Teacher updatedTeacher = teacherService.updateTeacher(id, teacherDetails);

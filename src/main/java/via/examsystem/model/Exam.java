@@ -14,7 +14,8 @@ public class Exam {
     private String title;
     private Date examDate;
 
-    // 关联到课程
+    private String examPassword;  // 考试密码
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
@@ -22,9 +23,10 @@ public class Exam {
     public Exam() {
     }
 
-    public Exam(String title, Date examDate, Course course) {
+    public Exam(String title, Date examDate, String examPassword,Course course) {
         this.title = title;
         this.examDate = examDate;
+        this.examPassword=examPassword;
         this.course = course;
     }
 
@@ -60,12 +62,21 @@ public class Exam {
         this.course = course;
     }
 
+    public void setExamPassword(String examPassword) {
+        this.examPassword = examPassword;
+    }
+
+    public String getExamPassword() {
+        return examPassword;
+    }
+
     @Override
     public String toString() {
         return "Exam{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", examDate=" + examDate +
+                ", examPassword='" + examPassword + '\'' +
                 ", course=" + course +
                 '}';
     }

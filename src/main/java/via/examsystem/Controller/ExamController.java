@@ -9,6 +9,12 @@ import via.examsystem.Service.ExamService;
 import java.util.List;
 
 
+@CrossOrigin(
+        origins = "http://localhost:3000",
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH},
+        allowCredentials = "true"
+)
 @RestController
 @RequestMapping("/exams")
 public class ExamController {
@@ -29,6 +35,26 @@ public class ExamController {
             return ResponseEntity.ok(exam);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/set-password/{examId}")
+    public ResponseEntity<?> setPassword(@PathVariable Long examId, @RequestBody String password) {
+        boolean isSet = examService.setExamPassword(examId, password);
+        if (isSet) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("Failed to set password");
+        }
+    }
+
+    @PostMapping("/validate-password/{examId}")
+    public ResponseEntity<?> validatePassword(@PathVariable Long examId, @RequestBody String password) {
+        boolean isValid = examService.validateExamPassword(examId, password);
+        if (isValid) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().body("Invalid password");
+        }
     }
 
     @PostMapping("/")

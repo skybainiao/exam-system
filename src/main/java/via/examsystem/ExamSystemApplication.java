@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"via/examsystem/Controller", "via/examsystem/Service", "via/examsystem/Repository", "via/examsystem/model"})
+@ComponentScan(basePackages = {"via.examsystem/Controller","via.examsystem/model","via.examsystem/Repository","via.examsystem/Service"})
 
 public class ExamSystemApplication {
 

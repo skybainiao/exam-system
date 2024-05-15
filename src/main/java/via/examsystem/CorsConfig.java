@@ -14,7 +14,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 // 确保配置的路径和方法完全符合实际使用
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")
+                        .allowedOrigins("*")
                         .allowedMethods("*")  // 允许所有方法
                         .allowedHeaders("*")  // 允许所有头
                         .allowCredentials(true);  // 允许凭证
