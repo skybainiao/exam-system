@@ -1,19 +1,15 @@
 package via.examsystem.Service;
 
-import via.examsystem.Repository.ExamRepository;
-
-import via.examsystem.model.Exam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import via.examsystem.model.Teacher;
+import via.examsystem.Repository.ExamRepository;
+import via.examsystem.model.Exam;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ExamService {
-
 
     @Autowired
     private ExamRepository examRepository;
@@ -31,21 +27,21 @@ public class ExamService {
     }
 
     public Exam updateExam(Long id, Exam examDetails) {
-        Exam exam = examRepository.findById(id).orElse(null);
-        if (exam != null) {
+        Optional<Exam> examOpt = examRepository.findById(id);
+        if (examOpt.isPresent()) {
+            Exam exam = examOpt.get();
             exam.setTitle(examDetails.getTitle());
             exam.setExamDate(examDetails.getExamDate());
+            exam.setExamPassword(examDetails.getExamPassword());
             exam.setCourse(examDetails.getCourse());
-            examRepository.save(exam);
-            return exam;
+            return examRepository.save(exam);
         }
         return null;
     }
 
     public boolean deleteExam(Long id) {
-        Optional<Exam> exam = examRepository.findById(id);
-        if (exam.isPresent()) {
-            examRepository.delete(exam.get());
+        if (examRepository.existsById(id)) {
+            examRepository.deleteById(id);
             return true;
         }
         return false;
@@ -62,8 +58,7 @@ public class ExamService {
         return false;
     }
 
-    public boolean validateExamPassword(Long examId, String password) {
-        Optional<Exam> examOpt = examRepository.findById(examId);
-        return examOpt.isPresent() && examOpt.get().getExamPassword().equals(password);
+    public Optional<Exam> validateExamPassword(String password) {
+        return examRepository.findByExamPassword(password);
     }
 }

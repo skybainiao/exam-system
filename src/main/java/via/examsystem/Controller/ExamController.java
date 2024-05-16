@@ -1,13 +1,13 @@
 package via.examsystem.Controller;
 
-import via.examsystem.model.Exam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import via.examsystem.Service.ExamService;
+import via.examsystem.model.Exam;
 
 import java.util.List;
-
+import java.util.Optional;
 
 @CrossOrigin(
         origins = "http://localhost:3000",
@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/exams")
 public class ExamController {
-
 
     @Autowired
     private ExamService examService;
@@ -47,11 +46,11 @@ public class ExamController {
         }
     }
 
-    @PostMapping("/validate-password/{examId}")
-    public ResponseEntity<?> validatePassword(@PathVariable Long examId, @RequestBody String password) {
-        boolean isValid = examService.validateExamPassword(examId, password);
-        if (isValid) {
-            return ResponseEntity.ok().build();
+    @PostMapping("/validate-password")
+    public ResponseEntity<?> validatePassword(@RequestBody PasswordRequest passwordRequest) {
+        Optional<Exam> examOpt = examService.validateExamPassword(passwordRequest.getPassword());
+        if (examOpt.isPresent()) {
+            return ResponseEntity.ok(examOpt.get());
         } else {
             return ResponseEntity.badRequest().body("Invalid password");
         }
@@ -78,5 +77,18 @@ public class ExamController {
         }
         return ResponseEntity.notFound().build();
     }
+}
 
+class PasswordRequest {
+    private String password;
+
+    // getters and setters
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

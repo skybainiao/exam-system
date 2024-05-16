@@ -1,17 +1,15 @@
 package via.examsystem.Service;
 
-import via.examsystem.Repository.AnswerRepository;
-
-import via.examsystem.model.Answer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import via.examsystem.Repository.AnswerRepository;
+import via.examsystem.model.Answer;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AnswerService {
-
 
     @Autowired
     private AnswerRepository answerRepository;
@@ -24,26 +22,23 @@ public class AnswerService {
         return answerRepository.findById(id).orElse(null);
     }
 
-    public Answer createAnswer(Answer answer) {
-        return answerRepository.save(answer);
+    public List<Answer> createAnswers(List<Answer> answers) {
+        return answerRepository.saveAll(answers);
     }
 
     public Answer updateAnswer(Long id, Answer answerDetails) {
-        Answer answer = answerRepository.findById(id).orElse(null);
-        if (answer != null) {
-            answer.setQuestion(answerDetails.getQuestion());
-            answer.setStudent(answerDetails.getStudent());
+        Optional<Answer> answerOpt = answerRepository.findById(id);
+        if (answerOpt.isPresent()) {
+            Answer answer = answerOpt.get();
             answer.setStudentAnswer(answerDetails.getStudentAnswer());
-            answerRepository.save(answer);
-            return answer;
+            return answerRepository.save(answer);
         }
         return null;
     }
 
     public boolean deleteAnswer(Long id) {
-        Optional<Answer> answer = answerRepository.findById(id);
-        if (answer.isPresent()) {
-            answerRepository.delete(answer.get());
+        if (answerRepository.existsById(id)) {
+            answerRepository.deleteById(id);
             return true;
         }
         return false;

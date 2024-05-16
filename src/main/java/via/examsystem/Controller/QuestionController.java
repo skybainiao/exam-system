@@ -1,14 +1,12 @@
 package via.examsystem.Controller;
 
-import via.examsystem.Service.QuestionService;
-
-import via.examsystem.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import via.examsystem.Service.QuestionService;
+import via.examsystem.model.Question;
 
 import java.util.List;
-
 
 @CrossOrigin(
         origins = "http://localhost:3000",
@@ -19,8 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/questions")
 public class QuestionController {
-
-
 
     @Autowired
     private QuestionService questionService;
@@ -44,6 +40,12 @@ public class QuestionController {
         return questionService.createQuestion(question);
     }
 
+    @PostMapping("/batch")
+    public ResponseEntity<?> createQuestions(@RequestBody List<Question> questions) {
+        questionService.createQuestions(questions);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Question> updateQuestion(@PathVariable Long id, @RequestBody Question questionDetails) {
         Question updatedQuestion = questionService.updateQuestion(id, questionDetails);
@@ -60,5 +62,4 @@ public class QuestionController {
         }
         return ResponseEntity.notFound().build();
     }
-
 }

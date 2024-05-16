@@ -1,25 +1,16 @@
 package via.examsystem.Controller;
 
-import via.examsystem.Service.AnswerService;
-import via.examsystem.model.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import via.examsystem.Service.AnswerService;
+import via.examsystem.model.Answer;
 
 import java.util.List;
 
-
-@CrossOrigin(
-        origins = "http://localhost:3000",
-        allowedHeaders = "*",
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH},
-        allowCredentials = "true"
-)
 @RestController
 @RequestMapping("/answers")
 public class AnswerController {
-
 
     @Autowired
     private AnswerService answerService;
@@ -39,8 +30,9 @@ public class AnswerController {
     }
 
     @PostMapping("/")
-    public Answer createAnswer(@RequestBody Answer answers) {
-        return answerService.createAnswer(answers);
+    public ResponseEntity<?> createAnswers(@RequestBody List<Answer> answers) {
+        List<Answer> createdAnswers = answerService.createAnswers(answers);
+        return ResponseEntity.ok(createdAnswers);
     }
 
     @PutMapping("/{id}")
@@ -59,6 +51,4 @@ public class AnswerController {
         }
         return ResponseEntity.notFound().build();
     }
-
-
 }
