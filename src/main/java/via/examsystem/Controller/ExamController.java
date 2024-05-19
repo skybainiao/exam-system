@@ -5,9 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import via.examsystem.Service.ExamService;
 import via.examsystem.model.Exam;
-
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @CrossOrigin(
         origins = "http://localhost:3000",
@@ -19,12 +21,16 @@ import java.util.Optional;
 @RequestMapping("/exams")
 public class ExamController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ExamController.class);
+
     @Autowired
     private ExamService examService;
 
     @GetMapping("/")
     public List<Exam> getAllExams() {
-        return examService.findAllExams();
+        List<Exam> exams = examService.findAllExams();
+        logger.info("Fetched exams: " + exams);
+        return exams;
     }
 
     @GetMapping("/{id}")
@@ -42,19 +48,21 @@ public class ExamController {
         if (isSet) {
             return ResponseEntity.ok().build();
         } else {
-            return ResponseEntity.badRequest().body("Failed to set password");
+            return ResponseEntity.badRequest().body("{\"message\": \"Failed to set password\"}");
         }
     }
 
-    @PostMapping("/validate-password")
-    public ResponseEntity<?> validatePassword(@RequestBody PasswordRequest passwordRequest) {
-        Optional<Exam> examOpt = examService.validateExamPassword(passwordRequest.getPassword());
-        if (examOpt.isPresent()) {
-            return ResponseEntity.ok(examOpt.get());
+    @PostMapping("/validate-password/{examPassword}")
+    public ResponseEntity<?> validatePassword(@PathVariable String examPassword, @RequestBody Map<String, String> request) {
+        String password = request.get("password");
+        Exam exam = examService.validateExamPassword(examPassword, password);
+        if (exam != null) {
+            return ResponseEntity.ok(exam);
         } else {
-            return ResponseEntity.badRequest().body("Invalid password");
+            return ResponseEntity.badRequest().body("{\"message\": \"Invalid password\"}");
         }
     }
+
 
     @PostMapping("/")
     public Exam createExam(@RequestBody Exam exam) {
@@ -76,19 +84,5 @@ public class ExamController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
-    }
-}
-
-class PasswordRequest {
-    private String password;
-
-    // getters and setters
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

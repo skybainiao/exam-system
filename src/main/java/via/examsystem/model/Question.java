@@ -1,5 +1,6 @@
 package via.examsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,9 +14,9 @@ public class Question {
     private String content;
     private String correctAnswer;
 
-    // 关联到具体的考试
     @ManyToOne
     @JoinColumn(name = "exam_id")
+    @JsonBackReference
     private Exam exam;
 
     public Question() {
@@ -65,7 +66,7 @@ public class Question {
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", correctAnswer='" + correctAnswer + '\'' +
-                ", exam=" + exam +
+                ", exam=" + exam.getTitle() + // 只打印考试的标题
                 '}';
     }
 }

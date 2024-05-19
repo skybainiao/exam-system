@@ -1,7 +1,9 @@
 package via.examsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "exams")
@@ -20,13 +22,17 @@ public class Exam {
     @JoinColumn(name = "course_id")
     private Course course;
 
+    @OneToMany(mappedBy = "exam")
+    @JsonManagedReference
+    private Set<Question> questions; // 考试的所有问题
+
     public Exam() {
     }
 
-    public Exam(String title, Date examDate, String examPassword,Course course) {
+    public Exam(String title, Date examDate, String examPassword, Course course) {
         this.title = title;
         this.examDate = examDate;
-        this.examPassword=examPassword;
+        this.examPassword = examPassword;
         this.course = course;
     }
 
@@ -70,6 +76,14 @@ public class Exam {
         return examPassword;
     }
 
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
+
     @Override
     public String toString() {
         return "Exam{" +
@@ -77,7 +91,7 @@ public class Exam {
                 ", title='" + title + '\'' +
                 ", examDate=" + examDate +
                 ", examPassword='" + examPassword + '\'' +
-                ", course=" + course +
+                ", course=" + course.getName() + // 只打印课程的名称
                 '}';
     }
 }

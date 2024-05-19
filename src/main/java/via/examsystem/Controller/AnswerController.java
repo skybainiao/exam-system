@@ -8,6 +8,12 @@ import via.examsystem.model.Answer;
 
 import java.util.List;
 
+@CrossOrigin(
+        origins = "http://localhost:3000",
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH},
+        allowCredentials = "true"
+)
 @RestController
 @RequestMapping("/answers")
 public class AnswerController {

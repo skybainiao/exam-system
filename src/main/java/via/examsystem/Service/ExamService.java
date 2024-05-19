@@ -1,12 +1,10 @@
 package via.examsystem.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import via.examsystem.Repository.ExamRepository;
 import via.examsystem.model.Exam;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ExamService {
@@ -27,9 +25,8 @@ public class ExamService {
     }
 
     public Exam updateExam(Long id, Exam examDetails) {
-        Optional<Exam> examOpt = examRepository.findById(id);
-        if (examOpt.isPresent()) {
-            Exam exam = examOpt.get();
+        Exam exam = examRepository.findById(id).orElse(null);
+        if (exam != null) {
             exam.setTitle(examDetails.getTitle());
             exam.setExamDate(examDetails.getExamDate());
             exam.setExamPassword(examDetails.getExamPassword());
@@ -48,9 +45,8 @@ public class ExamService {
     }
 
     public boolean setExamPassword(Long examId, String password) {
-        Optional<Exam> examOpt = examRepository.findById(examId);
-        if (examOpt.isPresent()) {
-            Exam exam = examOpt.get();
+        Exam exam = examRepository.findById(examId).orElse(null);
+        if (exam != null) {
             exam.setExamPassword(password);
             examRepository.save(exam);
             return true;
@@ -58,7 +54,7 @@ public class ExamService {
         return false;
     }
 
-    public Optional<Exam> validateExamPassword(String password) {
-        return examRepository.findByExamPassword(password);
+    public Exam validateExamPassword(String examPassword, String password) {
+        return examRepository.findByExamPasswordAndExamPassword(examPassword, password);
     }
 }

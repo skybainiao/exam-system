@@ -6,7 +6,6 @@ import via.examsystem.Repository.AnswerRepository;
 import via.examsystem.model.Answer;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AnswerService {
@@ -27,9 +26,10 @@ public class AnswerService {
     }
 
     public Answer updateAnswer(Long id, Answer answerDetails) {
-        Optional<Answer> answerOpt = answerRepository.findById(id);
-        if (answerOpt.isPresent()) {
-            Answer answer = answerOpt.get();
+        Answer answer = answerRepository.findById(id).orElse(null);
+        if (answer != null) {
+            answer.setQuestion(answerDetails.getQuestion());
+            answer.setStudent(answerDetails.getStudent());
             answer.setStudentAnswer(answerDetails.getStudentAnswer());
             return answerRepository.save(answer);
         }
