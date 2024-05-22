@@ -36,6 +36,7 @@ public class QuestionService {
             Question question = questionOptional.get();
             question.setContent(questionDetails.getContent());
             question.setCorrectAnswer(questionDetails.getCorrectAnswer());
+            question.setWeight(questionDetails.getWeight());
             question.setExam(questionDetails.getExam());
             return questionRepository.save(question);
         }

@@ -35,6 +35,11 @@ public class AnswerController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/by-student-and-exam")
+    public List<Answer> getAnswersByStudentAndExam(@RequestParam Long studentId, @RequestParam Long examId) {
+        return answerService.getAnswersByStudentAndExam(studentId, examId);
+    }
+
     @PostMapping("/")
     public ResponseEntity<?> createAnswers(@RequestBody List<Answer> answers) {
         List<Answer> createdAnswers = answerService.createAnswers(answers);

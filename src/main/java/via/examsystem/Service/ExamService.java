@@ -4,6 +4,7 @@ import via.examsystem.Repository.ExamRepository;
 import via.examsystem.model.Exam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -30,6 +31,7 @@ public class ExamService {
             exam.setTitle(examDetails.getTitle());
             exam.setExamDate(examDetails.getExamDate());
             exam.setExamPassword(examDetails.getExamPassword());
+            exam.setDuration(examDetails.getDuration());
             exam.setCourse(examDetails.getCourse());
             return examRepository.save(exam);
         }

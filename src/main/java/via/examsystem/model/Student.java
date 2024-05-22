@@ -1,10 +1,7 @@
 package via.examsystem.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "students")
@@ -18,18 +15,18 @@ public class Student {
     private int age;
     private String email;
 
-    // 默认构造函数，JPA要求必须有
+    @OneToMany(mappedBy = "student")
+    private List<Answer> answers;
+
     public Student() {
     }
 
-    // 带参数的构造函数，便于创建实例
     public Student(String name, int age, String email) {
         this.name = name;
         this.age = age;
         this.email = email;
     }
 
-    // Getter 和 Setter 方法
     public Long getId() {
         return id;
     }
@@ -62,7 +59,14 @@ public class Student {
         this.email = email;
     }
 
-    // toString 方法用于输出对象信息，便于调试和日志记录
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
+
     @Override
     public String toString() {
         return "Student{" +

@@ -1,14 +1,11 @@
 package via.examsystem.Service;
 
-import via.examsystem.Repository.StudentRepository;
-import via.examsystem.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import via.examsystem.model.Teacher;
-
+import via.examsystem.Repository.StudentRepository;
+import via.examsystem.model.Student;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -34,24 +31,24 @@ public class StudentService {
             student.setName(studentDetails.getName());
             student.setAge(studentDetails.getAge());
             student.setEmail(studentDetails.getEmail());
-            studentRepository.save(student);
-            return student;
+            return studentRepository.save(student);
         }
         return null;
     }
 
     public boolean deleteStudent(Long id) {
-        Optional<Student> student = studentRepository.findById(id);
-        if (student.isPresent()) {
-            studentRepository.delete(student.get());
+        if (studentRepository.existsById(id)) {
+            studentRepository.deleteById(id);
             return true;
         }
         return false;
     }
 
+    public List<Student> getStudentsByExamId(Long examId) {
+        return studentRepository.findByAnswersQuestionExamId(examId);
+    }
+
     public Student validateStudent(Long id, String name) {
-        return studentRepository.findById(id)
-                .filter(student -> student.getName().equals(name))
-                .orElse(null);
+        return studentRepository.findByIdAndName(id, name);
     }
 }

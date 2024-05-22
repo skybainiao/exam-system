@@ -1,5 +1,6 @@
 package via.examsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,9 +17,10 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name = "student_id")
+    @JsonBackReference
     private Student student;
 
-    private String studentAnswer; // 学生的答案
+    private String studentAnswer;
 
     public Answer() {
     }

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import via.examsystem.Service.ExamService;
 import via.examsystem.model.Exam;
+
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +63,6 @@ public class ExamController {
             return ResponseEntity.badRequest().body("{\"message\": \"Invalid password\"}");
         }
     }
-
 
     @PostMapping("/")
     public Exam createExam(@RequestBody Exam exam) {

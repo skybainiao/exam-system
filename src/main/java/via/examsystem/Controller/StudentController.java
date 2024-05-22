@@ -1,16 +1,11 @@
 package via.examsystem.Controller;
 
-import org.springframework.http.HttpStatus;
-import via.examsystem.Service.StudentService;
-import via.examsystem.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import via.examsystem.Service.StudentService;
+import via.examsystem.model.Student;
 
 import java.util.List;
 
@@ -29,7 +24,6 @@ public class StudentController {
 
     @GetMapping("/")
     public List<Student> getAllStudents() {
-        System.out.println("get1111111111111111111111111111");
         return studentService.findAllStudents();
     }
 
@@ -64,6 +58,11 @@ public class StudentController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/by-exam/{examId}")
+    public List<Student> getStudentsByExamId(@PathVariable Long examId) {
+        return studentService.getStudentsByExamId(examId);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Student> loginTeacher(@RequestBody Student student) {
         Student foundStudent = studentService.validateStudent(student.getId(), student.getName());
@@ -72,5 +71,4 @@ public class StudentController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-
 }

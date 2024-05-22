@@ -15,8 +15,8 @@ public class Exam {
 
     private String title;
     private Date examDate;
-
-    private String examPassword;  // 考试密码
+    private String examPassword;
+    private int duration; // 添加的字段: 考试时长 (以分钟为单位)
 
     @ManyToOne
     @JoinColumn(name = "course_id")
@@ -24,15 +24,16 @@ public class Exam {
 
     @OneToMany(mappedBy = "exam")
     @JsonManagedReference
-    private Set<Question> questions; // 考试的所有问题
+    private Set<Question> questions;
 
     public Exam() {
     }
 
-    public Exam(String title, Date examDate, String examPassword, Course course) {
+    public Exam(String title, Date examDate, String examPassword, int duration, Course course) {
         this.title = title;
         this.examDate = examDate;
         this.examPassword = examPassword;
+        this.duration = duration; // 初始化字段
         this.course = course;
     }
 
@@ -60,20 +61,28 @@ public class Exam {
         this.examDate = examDate;
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
+    public String getExamPassword() {
+        return examPassword;
     }
 
     public void setExamPassword(String examPassword) {
         this.examPassword = examPassword;
     }
 
-    public String getExamPassword() {
-        return examPassword;
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public Set<Question> getQuestions() {
@@ -91,7 +100,8 @@ public class Exam {
                 ", title='" + title + '\'' +
                 ", examDate=" + examDate +
                 ", examPassword='" + examPassword + '\'' +
-                ", course=" + course.getName() + // 只打印课程的名称
+                ", duration=" + duration + // 打印考试时长
+                ", course=" + course.getName() +
                 '}';
     }
 }

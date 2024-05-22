@@ -43,4 +43,8 @@ public class AnswerService {
         }
         return false;
     }
+
+    public List<Answer> getAnswersByStudentAndExam(Long studentId, Long examId) {
+        return answerRepository.findByStudentIdAndQuestionExamId(studentId, examId);
+    }
 }

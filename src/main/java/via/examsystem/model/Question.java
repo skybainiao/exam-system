@@ -13,6 +13,7 @@ public class Question {
 
     private String content;
     private String correctAnswer;
+    private int weight; // 问题的分值
 
     @ManyToOne
     @JoinColumn(name = "exam_id")
@@ -22,9 +23,10 @@ public class Question {
     public Question() {
     }
 
-    public Question(String content, String correctAnswer, Exam exam) {
+    public Question(String content, String correctAnswer, int weight, Exam exam) {
         this.content = content;
         this.correctAnswer = correctAnswer;
+        this.weight = weight;
         this.exam = exam;
     }
 
@@ -52,6 +54,14 @@ public class Question {
         this.correctAnswer = correctAnswer;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     public Exam getExam() {
         return exam;
     }
@@ -66,6 +76,7 @@ public class Question {
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", correctAnswer='" + correctAnswer + '\'' +
+                ", weight=" + weight +
                 ", exam=" + exam.getTitle() + // 只打印考试的标题
                 '}';
     }
