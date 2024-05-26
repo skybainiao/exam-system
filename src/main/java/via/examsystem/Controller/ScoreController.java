@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import via.examsystem.Service.ScoreService;
 import via.examsystem.model.Score;
 
+import java.util.List;
+
 @CrossOrigin(
         origins = "http://localhost:3000",
         allowedHeaders = "*",
@@ -23,5 +25,11 @@ public class ScoreController {
     public ResponseEntity<Score> saveScore(@RequestBody Score score) {
         Score savedScore = scoreService.saveScore(score);
         return ResponseEntity.ok(savedScore);
+    }
+
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<Score>> getScoresByStudentId(@PathVariable Long studentId) {
+        List<Score> scores = scoreService.getScoresByStudentId(studentId);
+        return ResponseEntity.ok(scores);
     }
 }
