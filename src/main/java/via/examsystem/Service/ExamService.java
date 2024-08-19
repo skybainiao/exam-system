@@ -1,5 +1,6 @@
 package via.examsystem.Service;
 
+import via.examsystem.IServices.IExamService;
 import via.examsystem.Repository.ExamRepository;
 import via.examsystem.model.Exam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ExamService {
+public class ExamService implements IExamService {
 
     @Autowired
     private ExamRepository examRepository;
@@ -22,6 +23,11 @@ public class ExamService {
     }
 
     public Exam createExam(Exam exam) {
+        // Check if an exam with the same title already exists
+        Exam existingExam = examRepository.findByTitle(exam.getTitle());
+        if (existingExam != null) {
+            throw new IllegalArgumentException("An exam with the same title already exists.");
+        }
         return examRepository.save(exam);
     }
 

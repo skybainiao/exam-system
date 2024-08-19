@@ -3,6 +3,7 @@ package via.examsystem.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import via.examsystem.IServices.IExamService;
 import via.examsystem.Service.ExamService;
 import via.examsystem.model.Exam;
 
@@ -25,7 +26,7 @@ public class ExamController {
     private static final Logger logger = LoggerFactory.getLogger(ExamController.class);
 
     @Autowired
-    private ExamService examService;
+    private IExamService examService;
 
     @GetMapping("/")
     public List<Exam> getAllExams() {

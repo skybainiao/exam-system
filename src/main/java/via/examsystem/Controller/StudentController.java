@@ -64,7 +64,7 @@ public class StudentController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Student> loginTeacher(@RequestBody Student student) {
+    public ResponseEntity<Student> loginStudent(@RequestBody Student student) {
         Student foundStudent = studentService.validateStudent(student.getId(), student.getName());
         if (foundStudent != null) {
             return ResponseEntity.ok(foundStudent);
